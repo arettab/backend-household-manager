@@ -10,12 +10,17 @@ def create_app(test_config=None):
     app = Flask(__name__)
 
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:postgres@localhost:5432/household_events_development'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:postgres@localhost:5432/household_manager_development'
 
     db.init_app(app)
     migrate.init_app(app, db)
 
-    from .routes import books_bp
-    app.register_blueprint(books_bp)
+    from .routes import event
+    from .routes import household
+    app.register_blueprint(event.bp)
+    app.register_blueprint(household.bp)
+
+    from app.models.event import Event
+    from app.models.household import Household
 
     return app
