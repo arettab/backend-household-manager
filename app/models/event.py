@@ -1,15 +1,15 @@
 from app import db
 
 class Event(db.Model):
-    event_id = db.Column(db.Interger, primanry_key=True, autoincrement=True)
-    user_id = db.Column(db.Interger)
+    event_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer)
     tenant_id = db.Column(db.String)
     title = db.Column(db.String)
     decription = db.Column(db.String)
     date = db.Column(db.String)
-    time = db.Column(db.Sting)
-    cost = db.Column(db.Interger)
-    transportation = db.Column(db.Bool)
+    time = db.Column(db.String)
+    cost = db.Column(db.Integer)
+    transportation = db.Column(db.Boolean)
 
     def to_dict(self):
         return {

@@ -17,14 +17,13 @@ def create_app(test_config=None):
 
     from .routes import event
     from .routes import household
-    from .routes import user
+    from .routes import users
+    from .routes import role
 
     app.register_blueprint(event.bp)
     app.register_blueprint(household.bp)
-    app.register_blueprint(user.bp)
+    app.register_blueprint(users.bp)
+    app.register_blueprint(role.bp)
 
     from app.models.event import Event
-    from app.models.household import Household
-    from app.models.user import User
-
     return app
