@@ -30,9 +30,9 @@ def add_hoh(tenantId,userId):
     return response.text
 
 @bp.route("/users/<tenantId>/<userId>", methods=["POST"])
-def add_member():
+def invite_member(tenantId, email, name):
 
-    url = "https://api.userfront.com/v0/tenants/{tenantId}/roles/invite"
+    url = f"https://api.userfront.com/v0/tenants/{tenantId}/roles/invite"
 
     headers = {
         "Accept": "*/*",
@@ -40,13 +40,13 @@ def add_member():
         "Authorization": "Bearer" + userfront_test_key
         }
     data = {
-        "email": ,
-        "name": ,
+        "email": email ,
+        "name": name,
         "roles": [
             "member"
         ],
-        "options": {}
-        }
+        "options": {"type": "reset"}}
+        
     response = requests.post(url, data=data, headers=headers)
 
     return response.text

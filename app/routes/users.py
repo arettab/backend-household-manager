@@ -29,21 +29,22 @@ def get_user(userId):
     return response.text
 
 @bp.route("/users/invite", methods=["POST"])
-def invite_users():
+def invite_users(tenantId, email, name):
 
-    url = "https://api.userfront.com/v0/users/invite"
-
+    url = f"https://api.userfront.com/v0/tenants/{tenantId}/roles/invite"
     headers = {
         "Accept": "*/*",
         "Content-Type": "application/json",
         "Authorization": "Bearer uf_test_admin_vbqvm99n_6515a9308420587664b486a4a47b6b59"
         }
+
     data = {
-        "email": 
-        "name":" "
-        locked: false
-        password: "brandNewPassw0rd",
-        options: {}
+        "email": email,
+        "name": name,
+        "roles": [
+            "member"
+            ],
+        "options": {}
         }
 
     response = requests.post(url, data=data, headers=headers)
