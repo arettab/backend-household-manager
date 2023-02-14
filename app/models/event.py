@@ -14,6 +14,6 @@ class Event(db.Model):
     def to_dict(self):
         return dict(
             id=self.id,
-            name=self.name
+            title=self.title
         )
 # Title, Description, EventId, TimeDate, Transportation, Cost,userId
