@@ -58,3 +58,7 @@ def get_user_from_db(userId):
     user = validate_model(User, userId)
     return jsonify(user.to_dict()), 200
 
+@bp.route("", methods=["GET"])
+def get_all_users():
+    pass
+

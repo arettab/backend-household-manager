@@ -2,7 +2,7 @@ from app import db
 
 class Event(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    title = db.Column(db.)
+    title = db.Column(db.String, nullable=False)
     description = db.Column(db.String(100), nullable=False)
     userId = db.relationship("User", backref="user", lazy=True)
 
