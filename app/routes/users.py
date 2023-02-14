@@ -1,17 +1,31 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, make_response, abort
 import os
 from dotenv import load_dotenv
 import requests
+from app import db
+from app.models.user import User
 
 load_dotenv()
 
-bp = Blueprint("users", __name__)
+bp = Blueprint("users", __name__, url_prefix="/users")
 
 userfront_test_key = os.environ.get("USERFRONT_TEST_KEY")
 
+def validate_model(cls, model_id):
+    try:
+        model_id = int(model_id)
+    except:
+        abort(make_response({"message":f"{cls.__name__} {model_id} invalid"}, 400))
 
-@bp.route("/users/<userId>", methods=["GET"])
-def get_user(userId):
+    model = cls.query.get(model_id)
+    if not model:
+        abort(make_response({"message":f"{cls.__name__} {model_id} not found"}, 404))
+
+    return model
+
+
+@bp.route("/proxy/<userId>", methods=["GET"])
+def get_user_from_api(userId):
     url = f"https://api.userfront.com/v0/users/{userId}"
 
     headers = {
@@ -28,25 +42,23 @@ def get_user(userId):
     
     return response.text
 
-@bp.route("/users/invite", methods=["POST"])
-def invite_users(tenantId, email, name):
-
-    url = f"https://api.userfront.com/v0/tenants/{tenantId}/roles/invite"
+@bp.route("", methods=["POST"])
+def create_user():
     headers = {
         "Accept": "*/*",
         "Content-Type": "application/json",
-        "Authorization": "Bearer uf_test_admin_vbqvm99n_6515a9308420587664b486a4a47b6b59"
-        }
+        "Authorization": "Bearer " +userfront_test_key
+}
+    request_body = request.get_json()
+    new_user = User.from_dict
 
-    data = {
-        "email": email,
-        "name": name,
-        "roles": [
-            "member"
-            ],
-        "options": {}
-        }
+    db.session.add(new_user)
+    db.session.commit()
 
-    response = requests.post(url, data=data, headers=headers)
+    return jsonify(new_user.to_dict()), 201
 
-    return response.text
+@bp.route("/<userId>", methods=["GET"])
+def get_user_from_db(userId):
+    user = validate_model(User, userId)
+    return jsonify(user.to_dict()), 200
+

@@ -1,10 +1,9 @@
 from app import db
 
-class Event(db.Model):
+class Household(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    title = db.Column(db.)
-    description = db.Column(db.String(100), nullable=False)
-    userId = db.relationship("User", backref="user", lazy=True)
+    name = db.Column(db.String(100), nullable=False)
+    users = db.relationship("User", backref="household", lazy=True)
 
     @classmethod
     def from_dict(cls, data_dict):
@@ -16,4 +15,3 @@ class Event(db.Model):
             id=self.id,
             name=self.name
         )
-# Title, Description, EventId, TimeDate, Transportation, Cost,userId
