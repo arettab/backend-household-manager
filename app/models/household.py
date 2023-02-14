@@ -3,7 +3,6 @@ from app import db
 class Household(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(100), nullable=False)
-    users = db.relationship("User", backref="household", lazy=True)
 
     @classmethod
     def from_dict(cls, data_dict):

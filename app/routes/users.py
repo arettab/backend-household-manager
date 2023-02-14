@@ -44,13 +44,9 @@ def get_user_from_api(userId):
 
 @bp.route("", methods=["POST"])
 def create_user():
-    headers = {
-        "Accept": "*/*",
-        "Content-Type": "application/json",
-        "Authorization": "Bearer " +userfront_test_key
-}
+
     request_body = request.get_json()
-    new_user = User.from_dict
+    new_user = User.from_dict(request_body)
 
     db.session.add(new_user)
     db.session.commit()
